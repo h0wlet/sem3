@@ -69,8 +69,9 @@ void wordCount::writeToCSV(std::list<std::pair<std::string, int>> wordList, std:
         throw std::invalid_argument("output file not open");
     }
     std::list<std::pair<std::string, int>>::iterator it;
-    for (it = wordList.begin(); it != wordList.end(); it++) {
+   for (it = wordList.begin(); it != wordList.end(); it++) {
         fout << it->first << "," << it->second << "," << (double)it->second / (double)count * 100  << std::endl;
+        //fout << it->first << ";" << it->second << ";" << (double)it->second / (double)count * 100 << std::endl;
     }
     fout.close();
 }
