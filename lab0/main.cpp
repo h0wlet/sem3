@@ -5,7 +5,7 @@ int main() {
 
     wordCount obj1;
     std::string inputFile = "input.txt";
-    std::string outputFile = "output.txt";
+    std::string outputFile = "output.csv";
     try {
         obj1.readAndCount(inputFile);
         obj1.sortAndWrite(outputFile);
