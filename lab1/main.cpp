@@ -71,7 +71,7 @@ TEST_CASE("Erase"){
     LinkedList::iterator it1 = list.begin();
     for (; *it1 != 4; it1++) {}
     REQUIRE(*(it1) == 4);
-    it = list.erase(++it,it1);
+    it = list.erase(++it, it1);
     REQUIRE(list.size() == 2);
     REQUIRE(*(it) == 4);
     REQUIRE(*(--it) == 0);
