@@ -68,7 +68,7 @@ LinkedList::iterator LinkedList::end() {
 //Удаляет элемент, на который указывает итератор pos.
 LinkedList::iterator LinkedList::erase(LinkedList::iterator position){
     LinkedList::iterator it = LinkedList::iterator(position.node->next);
-    it.node->prev = it.node->prev->prev;
+    it.node->prev = position.node->prev;
     it.node->prev->next = it.node;
     delete position.node;
     _size--;
