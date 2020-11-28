@@ -11,15 +11,13 @@ LinkedList::LinkedList(const LinkedList & other){
     for (_List *i = other.endOfList->next; i != other.endOfList; i = i->next) {
         push_back(i->value);
     }
-    _size = other._size;
 }
 
 LinkedList::LinkedList(LinkedList &&other) {
-    endOfList = new _List();
-    *this = other;
+    endOfList = other.endOfList;
     _size = other._size;
+    other.endOfList = nullptr;
     other._size = 0;
-    other.endOfList->prev = other.endOfList->next = nullptr;
 }
 
 LinkedList::~LinkedList() {
@@ -38,9 +36,14 @@ LinkedList & LinkedList::operator=(const LinkedList & other){
 }
 
 LinkedList & LinkedList::operator=(LinkedList && other){
-    this->endOfList = other.endOfList;
-    other._size = 0;
+    if (this == &other)
+        return *this;
+    clear();
+    delete endOfList;
+    endOfList = other.endOfList;
+    _size = other._size;
     other.endOfList = nullptr;
+    other._size = 0;
     return *this;
 }
 
@@ -84,26 +87,20 @@ const value_type & LinkedList::back() const{
 
 //Удаляет все вхождения value в список.
 int LinkedList::remove(const value_type & value){
-    if (empty()) {
-        throw std::logic_error("List is empty");
-    }
     int count = 0;
-    for (auto it = begin(); it != end(); it++) {
+    for (auto it = begin(); it != end(); ) {
         if (*(it) == value){
-            _size--;
             count++;
-            erase(it);
+            it = erase(it);
+        } else {
+            ++it;
         }
     }
     return count;
 }
 
 void LinkedList::clear(){
-    if (empty()) {
-        throw std::logic_error("List is empty");
-    }
     for (auto it = begin(); it != end(); it++) {
-        _size--;
         erase(it);
     }
 }
@@ -145,6 +142,8 @@ LinkedList & LinkedList::operator+=(const LinkedList & other){
 }
 
 bool operator!=(const LinkedList &left, const LinkedList &right) {
+    if (left.size() != right.size())
+        return true;
     auto varLeft = left.endOfList->next;
     auto varRight = right.endOfList->next;
     while (varLeft->value == varRight->value) {
@@ -160,7 +159,5 @@ bool operator==(const LinkedList & left, const LinkedList & right){
 }
 
 LinkedList operator+(const LinkedList & left, const LinkedList & right){
-    LinkedList *list = new LinkedList(left);
-    *list += right;
-    return (*list);
+    return LinkedList(left)+=right;
 }
