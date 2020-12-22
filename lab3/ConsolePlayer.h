@@ -1,12 +1,12 @@
 #ifndef LAB3_CONSOLEPLAYER_H
 #define LAB3_CONSOLEPLAYER_H
 
-#include "Model.h"
+#include "Player.h"
 #include <utility>
 
-class ConsolePlayer : public Model {
+class ConsolePlayer : public Player {
 public:
-    static Model moveConsolePlayer(Model model, std::pair<int,int> indexes, char sign);
+    std::pair<int,int> getMove(Model &model, Sign sign) override;
 };
 
 
