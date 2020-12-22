@@ -4,85 +4,27 @@
 #include "BotPlayer.h"
 #include <iostream>
 #define Person 1
-#define Bot 2
-
-using namespace std;
+//#define Bot 2
 
 void Game::startGame(){
     Model model{};
-    model.createField();
+    View view(model);
+
     View::chooseGamer(1);
-    int firstPlayer, secondPlayer;
-    firstPlayer = readPlayer(1);
+    Player *player1 = (readPlayer(1) == Person) ? new ConsolePlayer : new BotPlayer;
     View::chooseGamer(2);
-    secondPlayer = readPlayer(2);
-    cout << "Choose a sign for the first player: x or o?";
-    char sign;
-    cin >> sign;
-    while (sign != 'x' && sign != 'o') {
-        cout << "Unknown sign!" << endl;
-        cout << "Choose your sign: x or o? ";
-        cin >> sign;
-    }
-    sign = changeSign(sign);
+    Player *player2 = (readPlayer(2) == Person) ? new ConsolePlayer : new BotPlayer;
+
     while (!model.isEndOfGame()) {
-        sign = changeSign(sign);
-        switch (firstPlayer) {
-            case Person:
-                model = doMovePerson(model, sign);
-                break;
-            case Bot:
-                model = doMoveBot(model, sign);
-                break;
-            default:
-                return;
-        }
-        if (model.isEndOfGame()){
-            cout << "First player wins!";
-            return;
-        }
-        if (model.isFilledField()){
-            cout << "Draw!";
-            return;
-        }
-        sign = changeSign(sign);
-        switch (secondPlayer) {
-            case Person:
-                model = doMovePerson(model, sign);
-                break;
-            case Bot:
-                model = doMoveBot(model, sign);
-                break;
-            default:
-                return;
-        }
-        if (model.isEndOfGame()){
-            cout << "Second player wins!";
-            return;
-        }
-        if (model.isFilledField()){
-            cout << "Draw!";
-            return;
-        }
+        pair<int, int> move;
+        if (model.getCurrentPlayer() == Sign::Cross)
+            move = player1->getMove(model, Sign::Cross);
+        else
+            move = player2->getMove(model, Sign::Zero);
+
+        if (!model.makeMove(move, model))
+            cout << "Values entered incorrectly!" << endl;
     }
-}
-
-char Game::changeSign(char sign){
-    if (sign == 'x')
-        return 'o';
-    else return 'x';
-}
-
-Model Game::doMovePerson(Model model, char sign){
-    View::displayField(model);
-    cout << "Enter line and column: " << endl;
-    model = ConsolePlayer::moveConsolePlayer(model, Controller::readLineAndColumn(), sign);
-    return model;
-}
-
-Model Game::doMoveBot(Model model, char sign){
-    model = BotPlayer::moveBotPlayer(model, sign);
-    return model;
 }
 
 int Game::readPlayer(int num){
