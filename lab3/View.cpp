@@ -23,7 +23,7 @@ void View::chooseGamer(int num) {
 
 void View::update() {
     if (_model.isEndOfGame()){
-        cout << (_model.getCurrentPlayer() == Sign::Cross) ? "Cross player wins!" : "Zero player wins!";
+        cout << ((_model.getCurrentPlayer() == Sign::Cross) ? "Cross player wins!" : "Zero player wins!");
         return;
     }
     if (_model.isFilledField()){
@@ -31,5 +31,5 @@ void View::update() {
         return;
     }
     displayField(_model);
-    cout << (_model.getCurrentPlayer() == Sign::Cross) ? "Cross player turn: " : "Zero player turn: ";
+    cout << ((_model.getCurrentPlayer() == Sign::Cross) ? "Cross player turn: " : "Zero player turn: ");
 }
