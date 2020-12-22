@@ -1,14 +1,12 @@
 #ifndef LAB3_BOTPLAYER_H
 #define LAB3_BOTPLAYER_H
 
-#include "Model.h"
+#include "Player.h"
 #include <utility>
 
-class BotPlayer : public Model {
-    static std::pair<int,int> checkPlace(Model model);
+class BotPlayer : public Player {
 public:
-    static Model moveBotPlayer(Model model, char sign);
-
+    std::pair<int,int> getMove(Model &model, Sign sign) override;
 };
 
 #endif //LAB3_BOTPLAYER_H
