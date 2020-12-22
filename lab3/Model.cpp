@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "Player.h"
 
 void Model::createField(){
     for (int i = 0; i < 3; i++){
@@ -48,3 +49,31 @@ bool Model::isFilledField(){
     }
     return true;
 }
+
+Sign Model::getCurrentPlayer() {
+    if (currentPlayer == Sign::Cross)
+        return Sign::Cross;
+    else
+        return Sign::Zero;
+}
+
+bool Model::makeMove(std::pair<int,int> turn, Model &model){
+    if (turn.first < 1 || turn.first > 3 || turn.second < 1 || turn.second >3)
+        return false;
+    else {
+        setField(Player::getMove(&model, getCurrentPlayer()), getCurrentPlayer());
+        Model::notify();
+        if (currentPlayer == Sign::Cross)
+            return currentPlayer == Sign::Zero;
+        else
+            return currentPlayer == Sign::Cross;
+        return true;
+    }
+}
+
+void Model::setField(std::pair<int, int> move, Sign s){
+    char sign;
+    if (s == Sign::Cross) sign = 'x';
+    else sign = 'o';
+    field[move.first][move.second] = sign;
+};
