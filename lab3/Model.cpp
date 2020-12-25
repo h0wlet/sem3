@@ -50,10 +50,7 @@ bool Model::isFilledField(){
 }
 
 Sign Model::getCurrentPlayer() {
-    if (currentPlayer == Sign::Cross)
-        return Sign::Cross;
-    else
-        return Sign::Zero;
+    return currentPlayer;
 }
 
 bool Model::makeMove(std::pair<int,int> turn, Model &model){
